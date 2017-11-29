@@ -2,15 +2,13 @@ package com.tfl.billing;
 
 import com.oyster.*;
 import com.tfl.external.Customer;
-import com.tfl.external.CustomerDatabase;
+
 
 import java.math.BigDecimal;
 import java.util.*;
 
-public class TravelTracker implements ScanListener {
+public class TravelTracker  {
 
-    private final List<JourneyEvent> eventLog = new ArrayList();
-    private final Set<UUID> currentlyTravelling = new HashSet();
     private final TotalDaySpent totalDaySpent = new TotalDaySpent();
     private ExternalJarAdapter externalJarAdapter;
     private CardInteraction cardInteraction;
@@ -22,32 +20,26 @@ public class TravelTracker implements ScanListener {
     }
 
     public void chargeAccounts() {
-        CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
-        List<Customer> customers = this.externalJarAdapter.getCustomers();
-        Iterator var3 = customers.iterator();
+        List<Customer> customers = externalJarAdapter.getCustomers();
 
-        while(var3.hasNext()) {
-            Customer customer = (Customer)var3.next();
-            this.totalJourneysFor(customer);
+        for (Customer customer : customers) {
+            totalJourneysFor(customer);
         }
 
     }
 
     private void totalJourneysFor(Customer customer) {
-        List<JourneyEvent> customerJourneyEvents = new ArrayList();
-        List<JourneyEvent> eventLog = this.cardInteraction.getEventLog();
-        Iterator var4 = eventLog.iterator();
 
-        while(var4.hasNext()) {
-            JourneyEvent journeyEvent = (JourneyEvent)var4.next();
-            if (journeyEvent.cardId().equals(customer.cardId())) {
-                customerJourneyEvents.add(journeyEvent);
-            }
-        }
+        List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
 
-        List<Journey> journeys = this.getJourneysForEachCustomer(customerJourneyEvents);
-        BigDecimal customerTotal = this.customerTotalCost(journeys);
-        this.externalJarAdapter.charge(customer, journeys, this.totalDaySpent.roundToNearestPenny(customerTotal));
+        createJourneyEventsListForCustomer(customer, customerJourneyEvents);
+
+        List<Journey> journeys = new ArrayList<Journey>();
+        createJourneyList(customerJourneyEvents, journeys);
+
+        BigDecimal customerTotal = customerTotalCost(journeys);
+
+        externalJarAdapter.charge(customer, journeys, totalDaySpent.roundToNearestPenny(customerTotal));
     }
 
     private List<Journey> getJourneysForEachCustomer(List<JourneyEvent> customerJourneyEvents) {
@@ -70,73 +62,51 @@ public class TravelTracker implements ScanListener {
         return journeys;
     }
 
+    private void createJourneyList(List<JourneyEvent> customerJourneyEvents, List<Journey> journeys) {
+        JourneyEvent start = null;
+        for (JourneyEvent event : customerJourneyEvents) {
+            if (event instanceof JourneyStart) {
+                start = event;
+            }
+            if (event instanceof JourneyEnd && start != null) {
+                journeys.add(new Journey(start, event));
+                start = null;
+            }
+        }
+    }
+
+    private void createJourneyEventsListForCustomer(Customer customer, List<JourneyEvent> customerJourneyEvents) {
+        List<JourneyEvent> eventLog = cardInteraction.getEventLog();
+        for (JourneyEvent journeyEvent : eventLog) {
+            if (journeyEvent.cardId().equals(customer.cardId())) {
+                customerJourneyEvents.add(journeyEvent);
+            }
+        }
+    }
+
     private BigDecimal customerTotalCost(List<Journey> journeys) {
         BigDecimal customerTotal = new BigDecimal(0);
+        for (Journey journey : journeys) {
 
-        BigDecimal journeyPrice;
-        for(Iterator var3 = journeys.iterator(); var3.hasNext(); customerTotal = customerTotal.add(journeyPrice)) {
-            Journey journey = (Journey)var3.next();
-            journeyPrice = this.totalDaySpent.costOfOneJourney(journey);
+            BigDecimal journeyPrice = totalDaySpent.costOfOneJourney(journey);
+            customerTotal = customerTotal.add(journeyPrice);
         }
-
-        customerTotal = this.testForDailyCap(customerTotal);
+        customerTotal = testForDailyCap(customerTotal);
         return customerTotal;
     }
 
     private BigDecimal testForDailyCap(BigDecimal customerTotal) {
-        BigDecimal dailyCapForPeak = new BigDecimal(9.00);
-        BigDecimal dailyCapForNonPeak = new BigDecimal(7.00);
-        if (this.totalDaySpent.found_peak()) {
-            if (customerTotal.compareTo(dailyCapForPeak) > 0) {
-                customerTotal = dailyCapForPeak;
-            } else if (customerTotal.compareTo(dailyCapForNonPeak) > 0) {
-                customerTotal = dailyCapForNonPeak;
-            }
-        }
+        BigDecimal dailyCapForPeak=new BigDecimal(9);
+        BigDecimal dailyCapForNonPeak=new BigDecimal(7);
+
+        if(totalDaySpent.found_peak()==true) {
+            if(customerTotal.compareTo(dailyCapForPeak)>0)
+                customerTotal=dailyCapForPeak;}
+        else
+        if(customerTotal.compareTo(dailyCapForNonPeak)>0)
+            customerTotal=dailyCapForNonPeak;
 
         return customerTotal;
-    }
-
-    public void connect(OysterCardReader... cardReaders) {
-        OysterCardReader[] var2 = cardReaders;
-        int var3 = cardReaders.length;
-
-        for(int var4 = 0; var4 < var3; ++var4) {
-            OysterCardReader cardReader = var2[var4];
-            cardReader.register(this);
-        }
-
-    }
-
-    public void cardScanned(UUID cardId, UUID readerId) {
-        if (this.currentlyTravelling.contains(cardId)) {
-            this.eventLog.add(new JourneyEnd(cardId, readerId));
-            this.currentlyTravelling.remove(cardId);
-        } else {
-            if (!CustomerDatabase.getInstance().isRegisteredId(cardId)) {
-                System.out.println(cardId);
-                throw new UnknownOysterCardException(cardId);
-            }
-
-            this.currentlyTravelling.add(cardId);
-            this.eventLog.add(new JourneyStart(cardId, readerId));
-        }
-
-    }
-
-    public void cardScanned(UUID cardId, UUID readerId, String time) {
-        if (this.currentlyTravelling.contains(cardId)) {
-            this.eventLog.add(new JourneyEnd(cardId, readerId, time));
-            this.currentlyTravelling.remove(cardId);
-        } else {
-            if (!CustomerDatabase.getInstance().isRegisteredId(cardId)) {
-                throw new UnknownOysterCardException(cardId);
-            }
-
-            this.currentlyTravelling.add(cardId);
-            this.eventLog.add(new JourneyStart(cardId, readerId, time));
-        }
-
     }
 
 

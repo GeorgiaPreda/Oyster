@@ -15,7 +15,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TravelTrackerTest {
@@ -103,26 +102,5 @@ public class TravelTrackerTest {
         cleanUpStreams();
     }
 
-    @Test
-    public void assertConnectMethod() throws Exception
-    {   int cardScanned_iteration = 0;
-        externalJarAdapter.getCustomers().clear();
-        OysterCard oysterCard = new OysterCard();
-        externalJarAdapter.getCustomers().add(new Customer("John Smith", oysterCard));
-        cardInteraction.connect(paddingtonReader,bakerStreetReader);
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 8:00:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 9:20:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 11:30:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 12:30:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 21:00:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 22:20:00");
-        cardScanned_iteration++;
-        assertEquals(cardInteraction.getEventLog().size(),cardScanned_iteration);
-    }
 
 }

@@ -5,11 +5,12 @@ import com.oyster.OysterCardReader;
 import com.tfl.billing.CardInteraction;
 import com.tfl.billing.ExternalJar;
 import com.tfl.billing.ExternalJarAdapter;
-import com.tfl.billing.UnknownOysterCardException;
+import com.tfl.external.Customer;
 import com.tfl.underground.Station;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class CardInteractionTest {
@@ -34,13 +35,30 @@ public class CardInteractionTest {
 
     }
 
-    @Test (expected = UnknownOysterCardException.class)
-    public void assertExceptionIsThrownForUnknownCustomer()
-    {
-        OysterCard fakeCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef000");
-        OysterCardReader paddingtonReader =  externalJarAdapter.getCardReader(Station.PADDINGTON);
-        CardInteraction myCardInteraction = new CardInteraction();
-        myCardInteraction.cardScanned(fakeCard.id(),paddingtonReader.id());
+
+    @Test
+    public void assertConnectMethod() throws Exception
+    {   OysterCardReader paddingtonReader = externalJarAdapter.getCardReader(Station.PADDINGTON);
+        OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
+        CardInteraction cardInteraction = new CardInteraction();
+        int cardScanned_iteration = 0;
+        externalJarAdapter.getCustomers().clear();
+        OysterCard oysterCard = new OysterCard();
+        externalJarAdapter.getCustomers().add(new Customer("John Smith", oysterCard));
+        cardInteraction.connect(paddingtonReader,bakerStreetReader);
+        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 8:00:00");
+        cardScanned_iteration++;
+        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 9:20:00");
+        cardScanned_iteration++;
+        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 11:30:00");
+        cardScanned_iteration++;
+        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 12:30:00");
+        cardScanned_iteration++;
+        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 21:00:00");
+        cardScanned_iteration++;
+        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 22:20:00");
+        cardScanned_iteration++;
+        assertEquals(cardInteraction.getEventLog().size(),cardScanned_iteration);
     }
 
 }

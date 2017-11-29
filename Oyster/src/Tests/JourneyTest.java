@@ -16,12 +16,10 @@ import static org.junit.Assert.*;
 
 public class JourneyTest {
 
-    OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-
-    OysterCardReader paddingtonReader = OysterReaderLocator.atStation(Station.PADDINGTON);
-    OysterCardReader bakerStreetReader = OysterReaderLocator.atStation(Station.BAKER_STREET);
-
-
+    ExternalJar externalJarAdapter = new ExternalJarAdapter();
+    OysterCard myCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+    OysterCardReader paddingtonReader =  externalJarAdapter.getCardReader(Station.PADDINGTON);
+    OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
 
     JourneyStart journeyStart = new JourneyStart(myCard.id(),paddingtonReader.id());
     JourneyEnd journeyEnd = new JourneyEnd(myCard.id(),bakerStreetReader.id());
