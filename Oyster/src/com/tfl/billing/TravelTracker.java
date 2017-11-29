@@ -14,8 +14,7 @@ public class TravelTracker implements ScanListener {
     private final TotalDaySpent totalDaySpent = new TotalDaySpent();
     private ExternalJarAdapter externalJarAdapter;
     private CardInteraction cardInteraction;
-    static final int dailyCapForPeak = 9;
-    static final int dailyCapNonPeak = 7;
+
 
     public TravelTracker(CardInteraction cardInteraction) {
         this.cardInteraction = cardInteraction;
@@ -85,8 +84,8 @@ public class TravelTracker implements ScanListener {
     }
 
     private BigDecimal testForDailyCap(BigDecimal customerTotal) {
-        BigDecimal dailyCapForPeak = new BigDecimal(9);
-        BigDecimal dailyCapForNonPeak = new BigDecimal(7);
+        BigDecimal dailyCapForPeak = new BigDecimal(9.00);
+        BigDecimal dailyCapForNonPeak = new BigDecimal(7.00);
         if (this.totalDaySpent.found_peak()) {
             if (customerTotal.compareTo(dailyCapForPeak) > 0) {
                 customerTotal = dailyCapForPeak;
