@@ -6,29 +6,42 @@ import java.util.Date;
 import java.util.List;
 
 public class TotalDaySpent {
-    static final BigDecimal OFF_PEAK_JOURNEY_PRICE = new BigDecimal(2.40);
-    static final BigDecimal PEAK_JOURNEY_PRICE = new BigDecimal(3.20);
+    static final BigDecimal PEAK_LONG_JOURNEY_PRICE = new BigDecimal(3.80);
+    static final BigDecimal PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(2.90);
+    static final BigDecimal OFF_PEAK_LONG_JOURNEY_PRICE = new BigDecimal(2.70);
+    static final BigDecimal OFF_PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(1.60);
+    static final int longJourneyDuration = 25;
+    static final int morningPeakHourStart = 6;
+    static final int morningPeakHourEnd = 10;
+    static final int afternoonPeakHourStart = 17;
+    static final int afternoonPeakHourEnd = 20;
+
+    boolean peak_found=false;
+
 
     public TotalDaySpent() {
     }
 
-    BigDecimal customerTotalCost(List<Journey> journeys) {
-        BigDecimal customerTotal = new BigDecimal(0);
-        for (Journey journey : journeys) {
-            BigDecimal journeyPrice = OFF_PEAK_JOURNEY_PRICE;
-            if (peak(journey)) {
-                journeyPrice = PEAK_JOURNEY_PRICE;
-            }
-            customerTotal = customerTotal.add(journeyPrice);
-        }
-        return customerTotal;
+
+    public BigDecimal costOfOneJourney(Journey journey) {
+        BigDecimal journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
+        boolean short_journey = short_journey(journey);
+        if (peakJourney(journey)) {
+            if (short_journey == true)
+                journeyPrice = PEAK_SHORT_JOURNEY_PRICE;
+            else
+                journeyPrice = PEAK_LONG_JOURNEY_PRICE;
+            peak_found=true;
+        } else if (short_journey == false)
+            journeyPrice = OFF_PEAK_LONG_JOURNEY_PRICE;
+        return journeyPrice;
     }
 
     BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    boolean peak(Journey journey) {
+    boolean peakJourney(Journey journey) {
         return peak(journey.startTime()) || peak(journey.endTime());
     }
 
@@ -36,6 +49,22 @@ public class TotalDaySpent {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        return (hour >= 6 && hour <= 9) || (hour >= 17 && hour <= 19);
+        return travelDuringPeakHour(hour);
+    }
+
+    boolean travelDuringPeakHour(int hour) {
+        return (hour >= morningPeakHourStart && hour <= morningPeakHourEnd) || (hour >= afternoonPeakHourStart && hour <= afternoonPeakHourEnd);
+    }
+
+    boolean short_journey(Journey journey) {
+        if (journey.durationMinutes() <= longJourneyDuration)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean found_peak()
+    {
+        return peak_found;
     }
 }

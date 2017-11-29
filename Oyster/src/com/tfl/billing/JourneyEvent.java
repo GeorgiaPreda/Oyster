@@ -1,5 +1,8 @@
 package com.tfl.billing;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public abstract class JourneyEvent {
@@ -12,6 +15,20 @@ public abstract class JourneyEvent {
         this.cardId = cardId;
         this.readerId = readerId;
         this.time = System.currentTimeMillis();
+    }
+
+    public JourneyEvent(UUID cardId, UUID readerId, String time) {              //defined to be able to use specific time for testing
+        this.cardId = cardId;
+        this.readerId = readerId;
+        long timeMs = 0;
+        try {
+            Date date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(time);
+            timeMs = date.getTime();
+        } catch (ParseException e) {
+            System.out.println("Unable to convert string to date");
+            e.printStackTrace();
+        }
+        this.time = timeMs;
     }
 
     public UUID cardId() {
