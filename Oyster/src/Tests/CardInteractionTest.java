@@ -7,6 +7,9 @@ import com.tfl.billing.ExternalJar;
 import com.tfl.billing.ExternalJarAdapter;
 import com.tfl.external.Customer;
 import com.tfl.underground.Station;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -14,7 +17,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class CardInteractionTest {
+
+
     ExternalJar externalJarAdapter = new ExternalJarAdapter();
+    private Mockery context = new Mockery(){{
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
+
+    OysterCardReader mockOysterCardReader =  context.mock(OysterCardReader.class);
+    CardInteraction cardInteraction = new CardInteraction();
+
 
 
     @Test
@@ -35,30 +47,14 @@ public class CardInteractionTest {
 
     }
 
-
     @Test
-    public void assertConnectMethod() throws Exception
-    {   OysterCardReader paddingtonReader = externalJarAdapter.getCardReader(Station.PADDINGTON);
-        OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
-        CardInteraction cardInteraction = new CardInteraction();
-        int cardScanned_iteration = 0;
-        externalJarAdapter.getCustomers().clear();
-        OysterCard oysterCard = new OysterCard();
-        externalJarAdapter.getCustomers().add(new Customer("John Smith", oysterCard));
-        cardInteraction.connect(paddingtonReader,bakerStreetReader);
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 8:00:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 9:20:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 11:30:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 12:30:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 21:00:00");
-        cardScanned_iteration++;
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 22:20:00");
-        cardScanned_iteration++;
-        assertEquals(cardInteraction.getEventLog().size(),cardScanned_iteration);
+    public void assertConnectMethodCallsRegisterMethod() {
+        context.checking(new Expectations() {{
+            exactly(1).of(mockOysterCardReader).register(cardInteraction);
+        }});
+        cardInteraction.connect(mockOysterCardReader);
     }
+
+
 
 }
