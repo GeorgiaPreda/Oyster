@@ -5,10 +5,8 @@ import com.oyster.OysterCardReader;
 import com.tfl.billing.*;
 import com.tfl.underground.Station;
 import org.junit.Test;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -79,12 +77,12 @@ public class JourneyTest {
     }
 
     @Test
-    public void durationSeconds() throws InterruptedException {
+    public void assertDurationSeconds() throws InterruptedException {
         assertEquals(journey.durationSeconds(), (int) ((journeyEnd.time() - journeyStart.time()) / 1000));
     }
 
     @Test
-    public void durationMinutes() throws InterruptedException  {
+    public void assertDurationMinutes() throws InterruptedException  {
         assertEquals(journey.durationMinutes(), journey.durationSeconds() / 60 );
     }
 

@@ -21,8 +21,21 @@ public class TotalDaySpent {
 
     public TotalDaySpent() {}
 
+    // does calculation per each journey and checks if the daily cap is reached
+    public BigDecimal customerTotalCost(List<Journey> journeys) {
+        BigDecimal customerTotal = new BigDecimal(0);
+        for (Journey journey : journeys) {
+
+            BigDecimal journeyPrice = this.costOfOneJourney(journey);
+            customerTotal = customerTotal.add(journeyPrice);
+        }
+        customerTotal = testForDailyCap(customerTotal);
+        return customerTotal;
+    }
+
+
     //calculates the cost of one Journey
-    public BigDecimal costOfOneJourney(Journey journey) {
+    private BigDecimal costOfOneJourney(Journey journey) {
         BigDecimal journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
         boolean short_journey = short_journey(journey);
         if (peakJourney(journey)) {
@@ -36,14 +49,18 @@ public class TotalDaySpent {
         return journeyPrice;
     }
 
+
     //rounds the result
     BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
+
+
     //checks if either the start Time or end Time is done during peak time
     boolean peakJourney(Journey journey) {
         return peak(journey.startTime()) || peak(journey.endTime());
     }
+
 
     // gets the hour of a given time and checks if it is rush hour
     boolean peak(Date time) {
@@ -52,10 +69,15 @@ public class TotalDaySpent {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         return travelDuringPeakHour(hour);
     }
+
+
     //checks if a given hour is peak or not
     boolean travelDuringPeakHour(int hour) {
         return (hour >= morningPeakHourStart && hour <= morningPeakHourEnd) || (hour >= afternoonPeakHourStart && hour <= afternoonPeakHourEnd);
     }
+
+
+
     //checks if a hourney is short or long
     boolean short_journey(Journey journey) {
         if (journey.durationMinutes() <= longJourneyDuration)
@@ -63,9 +85,27 @@ public class TotalDaySpent {
         else
             return false;
     }
+
+
     // returns if a peak journey exists
     public boolean found_peak()
     {
         return peak_found;
+    }
+
+
+    //checks if either peak or non peak daily cap must be applied
+    private BigDecimal testForDailyCap(BigDecimal customerTotal) {
+        BigDecimal dailyCapForPeak=new BigDecimal(9);
+        BigDecimal dailyCapForNonPeak=new BigDecimal(7);
+
+        if(this.found_peak()==true) {
+            if(customerTotal.compareTo(dailyCapForPeak)>0)
+                customerTotal=dailyCapForPeak;}
+        else
+        if(customerTotal.compareTo(dailyCapForNonPeak)>0)
+            customerTotal=dailyCapForNonPeak;
+
+        return customerTotal;
     }
 }

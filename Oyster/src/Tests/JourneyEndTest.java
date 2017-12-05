@@ -1,15 +1,9 @@
 package Tests;
 
-import com.oyster.OysterCard;
-import com.oyster.OysterCardReader;
+
 import com.tfl.billing.JourneyEnd;
-import com.tfl.external.CustomerDatabase;
-import com.tfl.underground.OysterReaderLocator;
-import com.tfl.underground.Station;
 import org.junit.Test;
-
 import java.util.UUID;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -20,7 +14,7 @@ public class JourneyEndTest {
     private UUID readerDestinationId = UUID.randomUUID();
 
     @Test
-    public void createNewJourneyEndRightId() throws InterruptedException
+    public void createNewJourneyEndRightIdTest() throws InterruptedException
     {
 
         JourneyEnd journeyEnd=new JourneyEnd(cardExampleId,readerDestinationId);
@@ -28,7 +22,7 @@ public class JourneyEndTest {
     }
 
     @Test
-    public void createNewJourneyEndRightStationId() throws InterruptedException
+    public void createNewJourneyEndRightStationIdTest() throws InterruptedException
     {
         JourneyEnd journeyEnd=new JourneyEnd(cardExampleId, readerDestinationId);
         assertThat(journeyEnd.readerId(), is(readerDestinationId));

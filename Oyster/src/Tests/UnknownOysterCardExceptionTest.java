@@ -12,7 +12,7 @@ public class UnknownOysterCardExceptionTest {
 
     //assert if the exception is thrown
     @Test(expected = UnknownOysterCardException.class)
-    public void assertExceptionIsThrownForUnknownCustomer()
+    public void unknownCardExceptionTest() throws Exception
     {
 
         OysterCard fakeCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef000");

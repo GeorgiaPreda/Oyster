@@ -1,6 +1,5 @@
 package com.tfl.billing;
 
-import com.oyster.*;
 import com.tfl.external.Customer;
 
 
@@ -32,15 +31,13 @@ public class TravelTracker  {
     private void totalJourneysFor(Customer customer) {
 
         List<JourneyEvent> customerJourneyEvents = new ArrayList<>();
-
-        createJourneyEventsListForCustomer(customer, customerJourneyEvents);
-
+        createJourneyEventsList(customer, customerJourneyEvents);  //creates a list with journey events which corresponds to a given customer
         List<Journey> journeys = new ArrayList<>();
-        createJourneyList(customerJourneyEvents, journeys);
+        createJourneyList(customerJourneyEvents, journeys);        // creates a list with the journeys
 
-        BigDecimal customerTotal = customerTotalCost(journeys);
+        BigDecimal customerTotal = totalDaySpent.customerTotalCost(journeys); //calculates how much a customer must be charged
 
-        externalJarAdapter.charge(customer, journeys, totalDaySpent.roundToNearestPenny(customerTotal));
+        externalJarAdapter.charge(customer, journeys, totalDaySpent.roundToNearestPenny(customerTotal));  // charges customers
     }
 
     //creates a list of Journeys
@@ -57,7 +54,7 @@ public class TravelTracker  {
         }
     }
     // choose only the journey events that correspond to a given customer
-    private void createJourneyEventsListForCustomer(Customer customer, List<JourneyEvent> customerJourneyEvents) {
+    private void createJourneyEventsList(Customer customer, List<JourneyEvent> customerJourneyEvents) {
         List<JourneyEvent> eventLog = cardInteraction.getEventLog();
         for (JourneyEvent journeyEvent : eventLog) {
             if (journeyEvent.cardId().equals(customer.cardId())) {
@@ -65,31 +62,8 @@ public class TravelTracker  {
             }
         }
     }
-    // does calculation per each journey and checks if the daily cap is reached
-    private BigDecimal customerTotalCost(List<Journey> journeys) {
-        BigDecimal customerTotal = new BigDecimal(0);
-        for (Journey journey : journeys) {
 
-            BigDecimal journeyPrice = totalDaySpent.costOfOneJourney(journey);
-            customerTotal = customerTotal.add(journeyPrice);
-        }
-        customerTotal = testForDailyCap(customerTotal);
-        return customerTotal;
-    }
-    // checks if the dailycap must be applied or not
-    private BigDecimal testForDailyCap(BigDecimal customerTotal) {
-        BigDecimal dailyCapForPeak=new BigDecimal(9);
-        BigDecimal dailyCapForNonPeak=new BigDecimal(7);
 
-        if(totalDaySpent.found_peak()==true) {
-            if(customerTotal.compareTo(dailyCapForPeak)>0)
-                customerTotal=dailyCapForPeak;}
-        else
-        if(customerTotal.compareTo(dailyCapForNonPeak)>0)
-            customerTotal=dailyCapForNonPeak;
-
-        return customerTotal;
-    }
 
 
 
