@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TravelTrackerTest {
@@ -28,8 +27,8 @@ public class TravelTrackerTest {
     ExternalJar externalJarAdapter = new ExternalJarAdapter();
     OysterCardReader paddingtonReader = externalJarAdapter.getCardReader(Station.PADDINGTON);
     OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
-    CardInteraction cardInteraction = new CardInteraction();
-    TravelTracker travelTracker = new TravelTracker(cardInteraction);
+    CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
+    TravelTracker travelTracker = new TravelTracker(cardReaderInteraction);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -64,8 +63,8 @@ public class TravelTrackerTest {
         OysterCard oysterCard = new OysterCard();
         externalJarAdapter.getCustomers().add(new Customer("John Smith", oysterCard));
 
-        cardInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 08:00:00");
-        cardInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 08:20:00");
+        cardReaderInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 08:00:00");
+        cardReaderInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 08:20:00");
         travelTracker.chargeAccounts();
         setUpStreams();
         assertTrue(outContent.toString().contains("2.90"));

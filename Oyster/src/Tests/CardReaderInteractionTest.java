@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
-public class CardInteractionTest {
+public class CardReaderInteractionTest {
 
 
     ExternalJar externalJarAdapter = new ExternalJarAdapter();
@@ -19,13 +19,13 @@ public class CardInteractionTest {
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
 
-    CardInteraction cardInteraction = new CardInteraction();
+    CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
     ExternalJarAdapter mockExternalJarAdapter = context.mock(ExternalJarAdapter.class);
 
 
 
 
-    // assert that if a card is Scanned the the EventLog size gets bigger, while the currentlyTraveling size gets bigger or shrinks
+    // checks that if a card is Scanned the the EventLog size gets bigger, while the currentlyTraveling size gets bigger or shrinks
     @Test
     public void cardScannedTest() throws Exception {
 
@@ -37,21 +37,21 @@ public class CardInteractionTest {
             oneOf(mockExternalJarAdapter).isRegisteredId(myCard.id()); will(returnValue(true));
         }});
 
-        cardInteraction.cardScanned(myCard.id(),paddingtonReader.id());
-        assertEquals(cardInteraction.getEventLog().size(),1);
-        assertEquals(cardInteraction.getCurrentlyTravelling().size(),1);
-        assertEquals(cardInteraction.getCurrentlyTravelling().contains(myCard.id()),true);
-        assertEquals(cardInteraction.getEventLog().get(0).cardId(),myCard.id());
-        cardInteraction.cardScanned(myCard.id(),bakerStreetReader.id());
-        assertEquals(cardInteraction.getEventLog().size(),2);
-        assertEquals(cardInteraction.getCurrentlyTravelling().size(),0);
-        assertEquals(cardInteraction.getEventLog().get(1).cardId(),myCard.id());
+        cardReaderInteraction.cardScanned(myCard.id(),paddingtonReader.id());
+        assertEquals(cardReaderInteraction.getEventLog().size(),1);
+        assertEquals(cardReaderInteraction.getCurrentlyTravelling().size(),1);
+        assertEquals(cardReaderInteraction.getCurrentlyTravelling().contains(myCard.id()),true);
+        assertEquals(cardReaderInteraction.getEventLog().get(0).cardId(),myCard.id());
+        cardReaderInteraction.cardScanned(myCard.id(),bakerStreetReader.id());
+        assertEquals(cardReaderInteraction.getEventLog().size(),2);
+        assertEquals(cardReaderInteraction.getCurrentlyTravelling().size(),0);
+        assertEquals(cardReaderInteraction.getEventLog().get(1).cardId(),myCard.id());
 
     }
 
 
 
-    //assert that the connect method calls the register method
+    //checks that the connect method calls the register method
     @Test
     public void connectTest() throws Exception{
         OysterCardReader mockOysterCardReader1 = context.mock(OysterCardReader.class,"PADDINGTON");
@@ -59,12 +59,12 @@ public class CardInteractionTest {
         OysterCardReader mockOysterCardReader3 = context.mock(OysterCardReader.class,"VICTORIA");
 
         context.checking(new Expectations(){{
-            exactly(1).of(mockOysterCardReader1).register(cardInteraction);
-            exactly(1).of(mockOysterCardReader2).register(cardInteraction);
-            exactly(1).of(mockOysterCardReader3).register(cardInteraction);
+            exactly(1).of(mockOysterCardReader1).register(cardReaderInteraction);
+            exactly(1).of(mockOysterCardReader2).register(cardReaderInteraction);
+            exactly(1).of(mockOysterCardReader3).register(cardReaderInteraction);
         }});
 
-        cardInteraction.connect(mockOysterCardReader1,mockOysterCardReader2,mockOysterCardReader3);
+        cardReaderInteraction.connect(mockOysterCardReader1,mockOysterCardReader2,mockOysterCardReader3);
     }
 
 

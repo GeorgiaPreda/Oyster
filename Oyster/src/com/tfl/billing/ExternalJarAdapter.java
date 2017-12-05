@@ -26,8 +26,8 @@ public class ExternalJarAdapter implements ExternalJar  {
 
 
     //gets response from the DataBase( which is in ExternalJar) if a card is registered
-    @Override
-    public boolean isRegisteredId(UUID cardId) {
+
+    public static boolean isRegisteredId(UUID cardId) {
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
         return customerDatabase.isRegisteredId(cardId);
     }
@@ -52,5 +52,15 @@ public class ExternalJarAdapter implements ExternalJar  {
 
         OysterCard myOysterCard = new OysterCard(id);
         return myOysterCard;
+    }
+
+    @Override
+    public boolean addCustomerToDatabase(Customer customer) {
+        List<Customer> customers = this.getCustomers();
+        boolean isAdded = customers.add(customer);
+        while(customers.add(customer) != true){
+            isAdded = customers.add(customer);
+        }
+        return isAdded;
     }
 }

@@ -10,11 +10,11 @@ public class TravelTracker  {
 
     private final TotalDaySpent totalDaySpent = new TotalDaySpent();
     private ExternalJarAdapter externalJarAdapter;
-    private CardInteraction cardInteraction;
+    private CardReaderInteraction cardReaderInteraction;
 
 
-    public TravelTracker(CardInteraction cardInteraction) {
-        this.cardInteraction = cardInteraction;
+    public TravelTracker(CardReaderInteraction cardReaderInteraction) {
+        this.cardReaderInteraction = cardReaderInteraction;
         this.externalJarAdapter = new ExternalJarAdapter();
     }
 
@@ -55,7 +55,7 @@ public class TravelTracker  {
     }
     // choose only the journey events that correspond to a given customer
     private void createJourneyEventsList(Customer customer, List<JourneyEvent> customerJourneyEvents) {
-        List<JourneyEvent> eventLog = cardInteraction.getEventLog();
+        List<JourneyEvent> eventLog = cardReaderInteraction.getEventLog();
         for (JourneyEvent journeyEvent : eventLog) {
             if (journeyEvent.cardId().equals(customer.cardId())) {
                 customerJourneyEvents.add(journeyEvent);

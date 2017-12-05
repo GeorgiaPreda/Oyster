@@ -2,17 +2,17 @@ package com.tfl.billing;
 
 import com.oyster.OysterCardReader;
 import com.oyster.ScanListener;
-import com.tfl.external.CustomerDatabase;
+
 
 import java.util.*;
 
-public class CardInteraction implements ScanListener {
+public class CardReaderInteraction implements ScanListener {
 
     Set<UUID> currentlyTravelling;
     List<JourneyEvent> eventLog;
-    ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
 
-    public CardInteraction() {
+
+    public CardReaderInteraction() {
         this.currentlyTravelling = new HashSet<>();
         eventLog = new ArrayList<>();
     }
@@ -31,7 +31,7 @@ public class CardInteraction implements ScanListener {
             eventLog.add(new JourneyEnd(cardId, readerId));
             currentlyTravelling.remove(cardId);
         } else {
-            if (externalJarAdapter.isRegisteredId(cardId)) {
+            if (ExternalJarAdapter.isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
                 eventLog.add(new JourneyStart(cardId, readerId));
             } else {
@@ -46,7 +46,7 @@ public class CardInteraction implements ScanListener {
             eventLog.add(new JourneyEnd(cardId, readerId, time));
             currentlyTravelling.remove(cardId);
         } else {
-            if (CustomerDatabase.getInstance().isRegisteredId(cardId)) {
+            if (ExternalJarAdapter.isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
                 eventLog.add(new JourneyStart(cardId, readerId, time));
             } else {
