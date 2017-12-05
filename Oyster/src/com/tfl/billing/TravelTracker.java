@@ -19,6 +19,7 @@ public class TravelTracker  {
         this.externalJarAdapter = new ExternalJarAdapter();
     }
 
+    //charge each customer from the database
     public void chargeAccounts() {
         List<Customer> customers = externalJarAdapter.getCustomers();
 
@@ -27,14 +28,14 @@ public class TravelTracker  {
         }
 
     }
-
+    //gets the total payment a customer must do and charge him
     private void totalJourneysFor(Customer customer) {
 
-        List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
+        List<JourneyEvent> customerJourneyEvents = new ArrayList<>();
 
         createJourneyEventsListForCustomer(customer, customerJourneyEvents);
 
-        List<Journey> journeys = new ArrayList<Journey>();
+        List<Journey> journeys = new ArrayList<>();
         createJourneyList(customerJourneyEvents, journeys);
 
         BigDecimal customerTotal = customerTotalCost(journeys);
@@ -42,26 +43,7 @@ public class TravelTracker  {
         externalJarAdapter.charge(customer, journeys, totalDaySpent.roundToNearestPenny(customerTotal));
     }
 
-    private List<Journey> getJourneysForEachCustomer(List<JourneyEvent> customerJourneyEvents) {
-        List<Journey> journeys = new ArrayList();
-        JourneyEvent start = null;
-        Iterator var4 = customerJourneyEvents.iterator();
-
-        while(var4.hasNext()) {
-            JourneyEvent event = (JourneyEvent)var4.next();
-            if (event instanceof JourneyStart) {
-                start = event;
-            }
-
-            if (event instanceof JourneyEnd && start != null) {
-                journeys.add(new Journey(start, event));
-                start = null;
-            }
-        }
-
-        return journeys;
-    }
-
+    //creates a list of Journeys
     private void createJourneyList(List<JourneyEvent> customerJourneyEvents, List<Journey> journeys) {
         JourneyEvent start = null;
         for (JourneyEvent event : customerJourneyEvents) {
@@ -74,7 +56,7 @@ public class TravelTracker  {
             }
         }
     }
-
+    // choose only the journey events that correspond to a given customer
     private void createJourneyEventsListForCustomer(Customer customer, List<JourneyEvent> customerJourneyEvents) {
         List<JourneyEvent> eventLog = cardInteraction.getEventLog();
         for (JourneyEvent journeyEvent : eventLog) {
@@ -83,7 +65,7 @@ public class TravelTracker  {
             }
         }
     }
-
+    // does calculation per each journey and checks if the daily cap is reached
     private BigDecimal customerTotalCost(List<Journey> journeys) {
         BigDecimal customerTotal = new BigDecimal(0);
         for (Journey journey : journeys) {
@@ -94,7 +76,7 @@ public class TravelTracker  {
         customerTotal = testForDailyCap(customerTotal);
         return customerTotal;
     }
-
+    // checks if the dailycap must be applied or not
     private BigDecimal testForDailyCap(BigDecimal customerTotal) {
         BigDecimal dailyCapForPeak=new BigDecimal(9);
         BigDecimal dailyCapForNonPeak=new BigDecimal(7);

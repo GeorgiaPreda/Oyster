@@ -16,6 +16,8 @@ public class TotalDaySpentTest {
     OysterCardReader paddingtonReader =  externalJarAdapter.getCardReader(Station.PADDINGTON);
     OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
 
+
+    //asserts that a short journey during Non-Peak time is charged correctly
     @Test
     public void chargeShortNonPeakAccounts() throws Exception {
 
@@ -31,6 +33,7 @@ public class TotalDaySpentTest {
 
     }
 
+    //asserts that a short journey during Peak time is charged correctly
     @Test
     public void chargeShortPeakAccounts() throws Exception{
 
@@ -46,6 +49,7 @@ public class TotalDaySpentTest {
 
     }
 
+    //asserts that a long journey during Non-Peak time is charged correctly
     @Test
     public void chargeLongNonPeakAccounts() throws Exception{
 
@@ -61,6 +65,7 @@ public class TotalDaySpentTest {
 
     }
 
+    //asserts that a long journey during Peak time is charged correctly
     @Test
     public void chargeLongPeakAccounts() throws Exception
     {

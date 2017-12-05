@@ -42,7 +42,7 @@ public class TravelTrackerTest {
         System.setErr(null);
     }
 
-
+    //asserts that a customer is charged for a simple one journey
     @Test
     public void chargeAccounts() throws Exception{
 
@@ -60,6 +60,8 @@ public class TravelTrackerTest {
 
 
     }
+
+    //asserts that a Customer with peak journeys is charged with the peak daily cap
     @Test
     public void chargeAccountforNoPeak() throws Exception{
 
@@ -82,6 +84,7 @@ public class TravelTrackerTest {
 
     }
 
+    //asserts that a customer with no peak journeys is charged with daily non peak daily cap
     @Test
     public void chargeAccountsForPeak() throws Exception
     {

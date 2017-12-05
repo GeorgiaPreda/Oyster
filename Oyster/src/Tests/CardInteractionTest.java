@@ -5,7 +5,6 @@ import com.oyster.OysterCardReader;
 import com.tfl.billing.CardInteraction;
 import com.tfl.billing.ExternalJar;
 import com.tfl.billing.ExternalJarAdapter;
-import com.tfl.external.Customer;
 import com.tfl.underground.Station;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -13,7 +12,6 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class CardInteractionTest {
@@ -28,7 +26,7 @@ public class CardInteractionTest {
     CardInteraction cardInteraction = new CardInteraction();
 
 
-
+    // assert that if a card is Scanned the the EventLog size gets bigger, while the currentlyTraveling size gets bigger or shrinks
     @Test
     public void assertCardScanned() throws Exception {
 
@@ -47,6 +45,7 @@ public class CardInteractionTest {
 
     }
 
+    //assert that the connect method calls the register method
     @Test
     public void assertConnectMethodCallsRegisterMethod() {
         context.checking(new Expectations() {{

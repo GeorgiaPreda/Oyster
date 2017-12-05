@@ -7,10 +7,13 @@ import com.tfl.underground.Station;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 public interface ExternalJar {
 
     List<Customer> getCustomers();
+
+    boolean isRegisteredId(UUID cardId);
 
     OysterCardReader getCardReader(Station station);
 

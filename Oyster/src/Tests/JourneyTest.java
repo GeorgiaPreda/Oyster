@@ -3,8 +3,6 @@ package Tests;
 import com.oyster.OysterCard;
 import com.oyster.OysterCardReader;
 import com.tfl.billing.*;
-import com.tfl.external.CustomerDatabase;
-import com.tfl.underground.OysterReaderLocator;
 import com.tfl.underground.Station;
 import org.junit.Test;
 

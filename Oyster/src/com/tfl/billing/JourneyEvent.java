@@ -17,7 +17,8 @@ public abstract class JourneyEvent {
         this.time = System.currentTimeMillis();
     }
 
-    public JourneyEvent(UUID cardId, UUID readerId, String time) {              //defined to be able to use specific time for testing
+    //defined for testing purpose - allowing to specify time
+    public JourneyEvent(UUID cardId, UUID readerId, String time) {
         this.cardId = cardId;
         this.readerId = readerId;
         long timeMs = 0;

@@ -10,8 +10,9 @@ import org.junit.Test;
 public class UnknownOysterCardExceptionTest {
     ExternalJar externalJarAdapter = new ExternalJarAdapter();
 
+    //assert if the exception is thrown
     @Test(expected = UnknownOysterCardException.class)
-    public void assertExeptionIsThrownForUnknownCustomer()
+    public void assertExceptionIsThrownForUnknownCustomer()
     {
 
         OysterCard fakeCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef000");

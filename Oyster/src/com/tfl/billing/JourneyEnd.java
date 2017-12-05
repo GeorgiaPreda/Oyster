@@ -8,6 +8,7 @@ public class JourneyEnd extends JourneyEvent {
         super(cardId, readerId);
     }
 
+    //testing purpose
     public JourneyEnd(UUID cardId, UUID readerId, String time) {            //defined to be able to use specific time for testing
         super(cardId, readerId, time);
     }
