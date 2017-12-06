@@ -27,8 +27,8 @@ public class ExternalJarAdapterTest {
 
     @Test
     public void getOysterCardTest() throws Exception{
-        String id = "38400000-8cf0-11bd-b23e-10b96e4ef00d";
 
+        String id = "38400000-8cf0-11bd-b23e-10b96e4ef00d";
         assertTrue(externalJarAdapter.getOysterCard(id) instanceof OysterCard);
         assertEquals(externalJarAdapter.getOysterCard(id).id().toString(), id);
     }
