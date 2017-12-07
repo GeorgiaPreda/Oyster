@@ -18,10 +18,11 @@ public class TotalDaySpentTest {
     private OysterCardReader paddingtonReader =  externalJarAdapter.getCardReader(Station.PADDINGTON);
     private OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
     private List<Journey> journeyList = new ArrayList<>();
+    private TotalDaySpent totalDaySpent = new TotalDaySpent();
 
 
     //adds new journeys - created to eliminate duplicate code
-    public void addJourney(String timeStart, String timeEnd)
+    private void addJourney(String timeStart, String timeEnd)
     {
 
         JourneyStart journeyStart = new JourneyStart(myCard.id(),bakerStreetReader.id(),timeStart);
@@ -35,7 +36,7 @@ public class TotalDaySpentTest {
     public void shortNonPeakChargeTest() throws Exception {
 
         addJourney("2017/09/10 13:00:00","2017/09/10 13:20:00");
-        assertEquals(new TotalDaySpent().customerTotalCost(journeyList),new BigDecimal(1.60));
+        assertEquals(totalDaySpent.customerTotalCost(journeyList),new BigDecimal(1.60));
 
     }
 
@@ -44,7 +45,7 @@ public class TotalDaySpentTest {
     public void shortPeakChargeTest() throws Exception{
 
         addJourney("2017/09/10 08:00:00","2017/09/10 08:20:00");
-        assertEquals(new TotalDaySpent().customerTotalCost(journeyList),new BigDecimal(2.90));
+        assertEquals(totalDaySpent.customerTotalCost(journeyList),new BigDecimal(2.90));
 
     }
 
@@ -53,7 +54,7 @@ public class TotalDaySpentTest {
     public void longNonPeakChargeTest() throws Exception{
 
         addJourney("2017/09/10 13:00:00","2017/09/10 14:20:00");
-        assertEquals(new TotalDaySpent().customerTotalCost(journeyList), new BigDecimal(2.70));
+        assertEquals(totalDaySpent.customerTotalCost(journeyList), new BigDecimal(2.70));
 
     }
 
@@ -62,7 +63,7 @@ public class TotalDaySpentTest {
     public void longPeakChargeTest() throws Exception
     {
         addJourney("2017/09/10 7:00:00","2017/09/10 8:20:00");
-        assertEquals(new TotalDaySpent().customerTotalCost(journeyList), new BigDecimal(3.80));
+        assertEquals(totalDaySpent.customerTotalCost(journeyList), new BigDecimal(3.80));
 
     }
 
@@ -75,7 +76,6 @@ public class TotalDaySpentTest {
         addJourney("2017/09/10 14:30:00","2017/09/10 15:30:00");
         addJourney("2017/09/10 21:00:00","2017/09/10 22:20:00");
 
-        TotalDaySpent totalDaySpent= new TotalDaySpent();
         assertEquals(new BigDecimal(7.00),totalDaySpent.customerTotalCost(journeyList));
 
     }
@@ -88,7 +88,6 @@ public class TotalDaySpentTest {
         addJourney("2017/09/10 11:30:00","2017/09/10 12:30:00");
         addJourney("2017/09/10 21:00:00","2017/09/10 22:20:00");
 
-        TotalDaySpent totalDaySpent= new TotalDaySpent();
         assertEquals(new BigDecimal(9.00),totalDaySpent.customerTotalCost(journeyList));
 
     }

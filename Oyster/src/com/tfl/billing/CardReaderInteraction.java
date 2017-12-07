@@ -2,8 +2,6 @@ package com.tfl.billing;
 
 import com.oyster.OysterCardReader;
 import com.oyster.ScanListener;
-
-
 import java.util.*;
 
 public class CardReaderInteraction implements ScanListener {

@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ExternalJarAdapter implements ExternalJar  {
 
 
+
     //gets the customer list from the Database
     @Override
     public List<Customer> getCustomers() {
