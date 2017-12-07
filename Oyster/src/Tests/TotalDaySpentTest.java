@@ -13,11 +13,11 @@ import static org.junit.Assert.assertEquals;
 
 
 public class TotalDaySpentTest {
-    ExternalJar externalJarAdapter = new ExternalJarAdapter();
-    OysterCard myCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-    OysterCardReader paddingtonReader =  externalJarAdapter.getCardReader(Station.PADDINGTON);
-    OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
-    List<Journey> journeyList = new ArrayList<>();
+    private ExternalJar externalJarAdapter = new ExternalJarAdapter();
+    private  OysterCard myCard = externalJarAdapter.getOysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+    private OysterCardReader paddingtonReader =  externalJarAdapter.getCardReader(Station.PADDINGTON);
+    private OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
+    private List<Journey> journeyList = new ArrayList<>();
 
 
     //adds new journeys - created to eliminate duplicate code

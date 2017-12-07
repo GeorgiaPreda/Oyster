@@ -14,13 +14,13 @@ import static org.junit.Assert.assertEquals;
 public class CardReaderInteractionTest {
 
 
-    ExternalJar externalJarAdapter = new ExternalJarAdapter();
+    private ExternalJar externalJarAdapter = new ExternalJarAdapter();
     private Mockery context = new Mockery(){{
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
 
-    CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
-    ExternalJarAdapter mockExternalJarAdapter = context.mock(ExternalJarAdapter.class);
+    private CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
+    private ExternalJarAdapter mockExternalJarAdapter = context.mock(ExternalJarAdapter.class);
 
 
 

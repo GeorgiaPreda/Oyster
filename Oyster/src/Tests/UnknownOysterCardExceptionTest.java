@@ -7,7 +7,7 @@ import com.tfl.underground.Station;
 import org.junit.Test;
 
 public class UnknownOysterCardExceptionTest {
-    ExternalJar externalJarAdapter = new ExternalJarAdapter();
+    private ExternalJar externalJarAdapter = new ExternalJarAdapter();
 
     //assert if the exception is thrown
     @Test(expected = UnknownOysterCardException.class)

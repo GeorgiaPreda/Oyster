@@ -20,11 +20,11 @@ public class TravelTrackerTest {
 
 
 
-    ExternalJar externalJarAdapter = new ExternalJarAdapter();
-    OysterCardReader paddingtonReader = externalJarAdapter.getCardReader(Station.PADDINGTON);
-    OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
-    CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
-    TravelTracker travelTracker = new TravelTracker(cardReaderInteraction);
+    private ExternalJar externalJarAdapter = new ExternalJarAdapter();
+    private OysterCardReader paddingtonReader = externalJarAdapter.getCardReader(Station.PADDINGTON);
+    private OysterCardReader bakerStreetReader = externalJarAdapter.getCardReader(Station.BAKER_STREET);
+    private CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
+    private TravelTracker travelTracker = new TravelTracker(cardReaderInteraction);
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();

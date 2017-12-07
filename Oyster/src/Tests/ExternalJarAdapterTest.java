@@ -16,8 +16,8 @@ public class ExternalJarAdapterTest {
 
     //tests if ExternalJarAdapter gets the right data from ExternalJar
 
-    ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
-    CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
+    private ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
+    private CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
 
     //checks if the database supplied by the externalJarAdapter is the right one
     @Test
