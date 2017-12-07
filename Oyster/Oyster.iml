@@ -19,5 +19,15 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="jmock-2.6" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

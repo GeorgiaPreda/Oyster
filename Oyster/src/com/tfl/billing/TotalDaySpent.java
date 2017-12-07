@@ -87,7 +87,7 @@ public class TotalDaySpent {
     }
 
 
-    // returns if a peak journey exists
+    // checks if a peak journey exists
     public boolean found_peak()
     {
         return peak_found;

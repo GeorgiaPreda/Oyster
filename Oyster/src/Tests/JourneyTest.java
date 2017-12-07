@@ -22,6 +22,7 @@ public class JourneyTest {
     Journey journey = new Journey(journeyStart,journeyEnd);
 
 
+    //checks the card Id
     @Test
     public void assertReturnOfCardID() throws InterruptedException
     {
@@ -29,6 +30,8 @@ public class JourneyTest {
         assertThat(journeyEnd.cardId(), is(myCard.id()));
     }
 
+
+    //checks the reader Id
     @Test
     public void assertReturnOfReaderID() throws InterruptedException
     {
@@ -36,6 +39,8 @@ public class JourneyTest {
         assertThat(journeyEnd.readerId(), is(bakerStreetReader.id()));
     }
 
+
+    //checks the start time
     @Test
     public void checkFormattedStartTimeTest() throws InterruptedException
     {
@@ -43,6 +48,8 @@ public class JourneyTest {
         assertThat(journey.formattedStartTime(), is(SimpleDateFormat.getInstance().format(new Date(journeyStart.time()))));
     }
 
+
+    //checks the end time
     @Test
     public void checkFormattedEndTimeTest() throws InterruptedException
     {
@@ -50,18 +57,23 @@ public class JourneyTest {
         assertThat(journey.formattedEndTime(), is(SimpleDateFormat.getInstance().format(new Date(journeyEnd.time()))));
     }
 
+
+    //checks the origin Id
     @Test
     public void assertJourneyOriginID() throws InterruptedException
     {
         assertEquals(journey.originId(),(journeyStart.readerId()));
     }
 
+
+    //checks the destination Id
     @Test
     public void assertJourneyDestinationID() throws InterruptedException
     {
         assertEquals(journey.destinationId(),journeyEnd.readerId());
     }
 
+    //checks the start time
     @Test
     public void assertStartTime() throws InterruptedException
     {
@@ -69,6 +81,7 @@ public class JourneyTest {
         assertThat(journey.startTime(), is(new Date(journeyStart.time())));
     }
 
+    //checks the end time
     @Test
     public void assertEndTimeTest() throws InterruptedException
     {
@@ -76,11 +89,15 @@ public class JourneyTest {
         assertThat(journey.endTime(), is(new Date(journeyEnd.time())));
     }
 
+
+    //checks the duration in seconds
     @Test
     public void assertDurationSeconds() throws InterruptedException {
         assertEquals(journey.durationSeconds(), (int) ((journeyEnd.time() - journeyStart.time()) / 1000));
     }
 
+
+    //checks the duration in minutes
     @Test
     public void assertDurationMinutes() throws InterruptedException  {
         assertEquals(journey.durationMinutes(), journey.durationSeconds() / 60 );

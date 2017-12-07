@@ -17,7 +17,6 @@ public class Example {
 
 
         CardReaderInteraction cardReaderInteraction = new CardReaderInteraction();
-        //cardReadersData.connect(paddingtonReader,bakerStreetReader,kingsCrossReader);
         cardReaderInteraction.connect(paddingtonReader,bakerStreetReader,kingsCrossReader,externalJarAdapter.getCardReader(Station.VICTORIA_STATION),externalJarAdapter.getCardReader(Station.ALDGATE),externalJarAdapter.getCardReader(Station.BANK));
         TravelTracker travelTracker = new TravelTracker(cardReaderInteraction);
         paddingtonReader.touch(myCard);

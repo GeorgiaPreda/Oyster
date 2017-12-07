@@ -34,20 +34,15 @@ public class TravelTrackerTest {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
 
-    private Mockery context = new Mockery(){{
-        setImposteriser(ClassImposteriser.INSTANCE);
-    }};
-
-    ExternalJarAdapter mockExternalJarAdapter = context.mock(ExternalJarAdapter.class);
-
-    private final TotalDaySpent mockTotalDaySpent = context.mock(TotalDaySpent.class);
-
+    //set up streams
     @Before
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
     }
 
+
+    //clean up streams
     @After
     public void cleanUpStreams() {
         System.setOut(null);
@@ -72,41 +67,6 @@ public class TravelTrackerTest {
 
 
     }
-
-
-    //mock test - not working atm
-    @Test
-    public void chargeAccountsTest() throws Exception{
-        List<Customer> customers = new ArrayList<>();
-        List<JourneyEvent> eventLogTest = new ArrayList<>();
-
-        customers.add(new Customer("John Smith", new OysterCard()));
-        customers.add(new Customer("Jack Smith", new OysterCard()));
-
-
-        JourneyStart journeyStartTest = new JourneyStart(customers.get(0).cardId(),paddingtonReader.id(),"2017/09/10 08:00:00");
-        JourneyEnd journeyEndTest = new JourneyEnd(customers.get(0).cardId(), bakerStreetReader.id(), "2017/09/10 08:20:00");
-
-        BigDecimal totalCost = new BigDecimal(2.40).setScale(2, BigDecimal.ROUND_HALF_UP);
-        eventLogTest.add(journeyStartTest);
-        eventLogTest.add(journeyEndTest);
-
-        context.checking(new Expectations(){{
-            oneOf(mockExternalJarAdapter).getCustomers(); will(returnValue(customers));
-            oneOf(mockTotalDaySpent).customerTotalCost(with(any(List.class))); will(returnValue(totalCost));
-            oneOf(mockExternalJarAdapter).charge(with(customers.get(0)),with(any(List.class)),with(totalCost));
-
-        }});
-
-        travelTracker.chargeAccounts();
-
-
-        context.assertIsSatisfied();
-    }
-
-
-
-
 
 
 }

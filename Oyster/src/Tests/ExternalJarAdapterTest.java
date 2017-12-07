@@ -19,12 +19,14 @@ public class ExternalJarAdapterTest {
     ExternalJarAdapter externalJarAdapter = new ExternalJarAdapter();
     CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
 
+    //checks if the database supplied by the externalJarAdapter is the right one
     @Test
     public void getCustomersTest() throws Exception{
 
         assertEquals(externalJarAdapter.getCustomers(),customerDatabase.getCustomers());
     }
 
+    //checks the oysterCardId supplied with the externalJarAdapter
     @Test
     public void getOysterCardTest() throws Exception{
 
@@ -33,6 +35,7 @@ public class ExternalJarAdapterTest {
         assertEquals(externalJarAdapter.getOysterCard(id).id().toString(), id);
     }
 
+    //checks  if the id exists
     @Test
     public void isRegisteredTest() throws Exception{
 
@@ -40,6 +43,7 @@ public class ExternalJarAdapterTest {
         assertEquals(externalJarAdapter.isRegisteredId(cardID),customerDatabase.isRegisteredId(cardID));
     }
 
+    //checks the cardReader suplied with the externalJarAdapter
     @Test
     public void getCardReaderTest() throws Exception{
 

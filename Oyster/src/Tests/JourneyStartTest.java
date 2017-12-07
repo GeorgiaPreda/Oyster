@@ -12,6 +12,8 @@ public class JourneyStartTest {
     private UUID cardExampleId = UUID.randomUUID();
     private UUID readerOriginId = UUID.randomUUID();
 
+
+    //checks the journeyStart card id
     @Test
     public void createNewJourneyStartRightIdTest() throws InterruptedException
     {
@@ -20,6 +22,7 @@ public class JourneyStartTest {
         assertThat(journeyStart.cardId(), is(cardExampleId));
     }
 
+    //checks the journeyStart reader id
     @Test
     public void createNewJourneyStartRightStationIdTest() throws InterruptedException
     {

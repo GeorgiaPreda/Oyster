@@ -54,6 +54,7 @@ public class ExternalJarAdapter implements ExternalJar  {
         return myOysterCard;
     }
 
+    //add a customer to the database
     @Override
     public boolean addCustomerToDatabase(Customer customer) {
         List<Customer> customers = this.getCustomers();
