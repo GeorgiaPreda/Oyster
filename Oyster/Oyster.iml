@@ -29,5 +29,35 @@
         <jarDirectory url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="jmock-2.6.0-jars" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES />
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$USER_HOME$/Downloads/jmock" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/Downloads/jmock" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>

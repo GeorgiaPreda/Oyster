@@ -5,18 +5,14 @@ import com.oyster.OysterCardReader;
 import com.tfl.billing.*;
 import com.tfl.external.Customer;
 import com.tfl.underground.Station;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.lib.legacy.ClassImposteriser;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import static org.junit.Assert.assertTrue;
 

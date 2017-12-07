@@ -26,7 +26,6 @@ public class ExternalJarAdapter implements ExternalJar  {
 
 
     //gets response from the DataBase( which is in ExternalJar) if a card is registered
-
     public static boolean isRegisteredId(UUID cardId) {
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
         return customerDatabase.isRegisteredId(cardId);

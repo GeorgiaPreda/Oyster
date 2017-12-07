@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jmock-2.6.0-jars">
+    <CLASSES />
+    <JAVADOC />
+    <NATIVE>
+      <root url="jar://$USER_HOME$/Downloads/jmock-2.6.0-jars.zip!/" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>
