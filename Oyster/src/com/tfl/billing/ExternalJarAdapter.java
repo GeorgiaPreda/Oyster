@@ -20,8 +20,7 @@ public class ExternalJarAdapter implements ExternalJar  {
     public List<Customer> getCustomers() {
 
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
-        List<Customer> customers = customerDatabase.getCustomers();
-        return customers;
+        return customerDatabase.getCustomers();
     }
 
 

@@ -52,7 +52,7 @@ public class TravelTrackerTest {
 
         externalJarAdapter.getCustomers().clear();
         OysterCard oysterCard = new OysterCard();
-        externalJarAdapter.getCustomers().add(new Customer("John Smith", oysterCard));
+        externalJarAdapter.addCustomerToDatabase(new Customer("John Smith", oysterCard));
 
         cardReaderInteraction.cardScanned(oysterCard.id(), paddingtonReader.id(), "2017/09/10 08:00:00");
         cardReaderInteraction.cardScanned(oysterCard.id(), bakerStreetReader.id(), "2017/09/10 08:20:00");
